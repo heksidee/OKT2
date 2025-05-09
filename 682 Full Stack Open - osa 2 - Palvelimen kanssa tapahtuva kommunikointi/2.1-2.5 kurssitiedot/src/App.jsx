@@ -1,27 +1,35 @@
-const Header = ({course}) => {
-  return (
-    <h1>
-      {course.name}
-    </h1>
-  )
-}
-
-const Content = ({course}) => {
-  return (
-    <div>
-      {course.parts.map((part, index) => (
-        <p key={index}>
-        {part.name} {part.exercises}
-        </p>
-      ))}
-    </div>
-  )
-}
-
-const Total = ({course}) => {
+/*const Total = ({course}) => {
   const totalExercises = course.parts.reduce((sum, part) => sum + part.exercises, 0)
   return <p>Number of exercises {totalExercises}</p>
-}
+}*/
+const Course = ( {course} ) => {
+  return (
+    <div>
+      <Header course={course}/>
+      <Content course={course.parts}/>
+    </div>
+  );
+};
+
+const Header = ({course}) => {
+  return <h1>{course.name}</h1>
+};
+
+const Content = ({course}) => {
+  const total = course.reduce((sum, part) => sum + part.exercises, 0); 
+  return (
+    <div>
+      {course.map((part, index) => (
+        <Part key={index} part={part}/>
+      ))}
+      <p><strong>Total of {total} exercises</strong></p>
+    </div>
+  );
+};
+
+const Part = ({part}) => {
+  return <p>{part.name} {part.exercises}</p>
+};
 
 const App = () => {
   const course = {
@@ -44,11 +52,8 @@ const App = () => {
 
   return (
     <div>
-      <Header course={course}/>
-      <Content course={course}/>
-      <Total course={course}/>
+      <Course course={course}/>
     </div>
   )
 }
-
 export default App
