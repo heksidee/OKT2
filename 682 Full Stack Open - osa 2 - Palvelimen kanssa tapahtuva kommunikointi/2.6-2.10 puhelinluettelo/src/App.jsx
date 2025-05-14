@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from "axios"
+import contactService from "./services/contacts"
 
 const Filter = ({ newSearch, setNewSearch}) => (
   <div>
@@ -21,11 +21,14 @@ const PersonForm = ({newName, newNumber, setNewName, setNewNumber, onSubmit}) =>
     </form>
 ) 
 
-const Numbers = ( {persons} ) => {
+const Numbers = ( {persons, deleteContact} ) => {
   return (
     <div>
       {persons.map((person, index) => (
-        <p key={index}>{person.name} {person.number}</p>
+        <div key={person.id} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <p key={index}>{person.name} {person.number}</p>
+          <button onClick={() => deleteContact(person.id)}>Delete</button>
+        </div>
       ))}
     </div>
   );
@@ -38,34 +41,61 @@ const App = () => {
   const [newSearch, setNewSearch] = useState("");
 
   useEffect(() => {
-    console.log("effect")
-    axios
-      .get("http://localhost:3001/persons")
+    contactService
+      .getAll()
       .then(response => {
-        console.log("promise fillfilled")
         setPersons(response.data)
       })
   }, [])
-  console.log("render", persons.length, "persons")
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const existingContact = persons.find(person => person.name === newName)
+    const newContact = {name: newName, number: newNumber}
+
     if (newName.trim() === "" || newNumber.trim() === "") return;
 
-    if(persons.some(person => person.name === newName)) {
-      alert(`${newName} is already added to phonebook`)
-      setNewName("");
+    if (existingContact) {
+      const confirmExisting = window.confirm(
+        `"${newName}" is already added to phonebook, replace the old number with a new one?`
+      )
+      if (confirmExisting) {
+        contactService
+          .update(existingContact.id, newContact)
+          .then(updatedContact => {
+            setPersons(persons.map(person =>
+              person.id !== existingContact.id ? person : updatedContact.data
+            ));
+          });
+        setNewName("");
+        setNewNumber("");
+      }
       return;
     }
-    setPersons([...persons, {name: newName, number: newNumber}]);
-    setNewName("");
-    setNewNumber("");
+    contactService
+      .create(newContact)
+      .then(response => {
+        setPersons([...persons, response.data]);
+        setNewName("");
+        setNewNumber("");
+      })
   }
 
   const filteredPersons = persons.filter(person =>
     person.name.toLowerCase().includes(newSearch.toLowerCase())
   );
 
+  const deleteContact = (id) => {
+    const contactToDelete = persons.find(n => n.id === id)
+    const confirm = window.confirm (`Do you really want to delete a contact "${contactToDelete.name}"?`)
+    if (confirm) {
+      contactService
+        .remove(id)
+        .then(responseData => {
+          setPersons(persons.filter(person => person.id !== id))
+        })
+    }
+  };
 
   return (
     <div>
@@ -74,7 +104,7 @@ const App = () => {
       <h2>Add a new</h2>
       <PersonForm newName={newName} newNumber={newNumber} setNewName={setNewName} setNewNumber={setNewNumber} onSubmit={handleSubmit}/>
       <h2>Numbers</h2>
-      <Numbers persons={filteredPersons}/>
+      <Numbers persons={filteredPersons} deleteContact={deleteContact}/>
     </div>
   )
 
