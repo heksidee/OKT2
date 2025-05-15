@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
 import contactService from "./services/contacts"
+import Notification from './components/Notification'
+import Error from "./components/Error"
+
 
 const Filter = ({ newSearch, setNewSearch}) => (
   <div>
@@ -9,10 +12,10 @@ const Filter = ({ newSearch, setNewSearch}) => (
 
 const PersonForm = ({newName, newNumber, setNewName, setNewNumber, onSubmit}) => (
   <form onSubmit={onSubmit}>
-      <div>
+      <div className='newNumber'>
         Name: <input value={newName} onChange={(e) => setNewName(e.target.value)} />
       </div>
-      <div>
+      <div className='newNumber'>
         Number: <input value={newNumber} onChange={(e) => setNewNumber(e.target.value)} />
       </div>
       <div>
@@ -39,6 +42,8 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState("");
   const [newSearch, setNewSearch] = useState("");
+  const [notification, setNotification] = useState(null)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     contactService
@@ -65,10 +70,16 @@ const App = () => {
           .then(updatedContact => {
             setPersons(persons.map(person =>
               person.id !== existingContact.id ? person : updatedContact.data
-            ));
+            ))
           });
         setNewName("");
         setNewNumber("");
+        setNotification(
+          `${newName} number changed`
+        )
+        setTimeout(() => {
+          setNotification(null)
+        }, 4000)
       }
       return;
     }
@@ -78,6 +89,12 @@ const App = () => {
         setPersons([...persons, response.data]);
         setNewName("");
         setNewNumber("");
+        setNotification(
+          `${newName} added to Phonebook`
+        )
+        setTimeout(() => {
+          setNotification(null)
+        }, 4000)
       })
   }
 
@@ -93,6 +110,12 @@ const App = () => {
         .remove(id)
         .then(responseData => {
           setPersons(persons.filter(person => person.id !== id))
+          setNotification(
+          `${contactToDelete.name} deleted from the Phonebook`
+          )
+          setTimeout(() => {
+            setNotification(null)
+          }, 4000)
         })
     }
   };
@@ -103,6 +126,8 @@ const App = () => {
       <Filter newSearch={newSearch} setNewSearch={setNewSearch}/>
       <h2>Add a new</h2>
       <PersonForm newName={newName} newNumber={newNumber} setNewName={setNewName} setNewNumber={setNewNumber} onSubmit={handleSubmit}/>
+      <Notification message={notification}/>
+      <Error message={error}/>
       <h2>Numbers</h2>
       <Numbers persons={filteredPersons} deleteContact={deleteContact}/>
     </div>
