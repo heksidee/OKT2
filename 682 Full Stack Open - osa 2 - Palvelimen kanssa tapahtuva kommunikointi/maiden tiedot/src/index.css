@@ -1,0 +1,24 @@
+h2 {
+    color: blue;
+}
+
+.newNumber {
+    margin-bottom: 8px;
+}
+
+.notification {
+    background-color: lightgreen;
+    border: 1px solid;
+    border-color: black;
+    margin-top: 0.5em;
+    padding: 0.5em;
+}
+
+.error {
+    background-color: lightgray;
+    border: 2px solid;
+    border-color: red;
+    color: red;
+    margin-top: 0.5em;
+    padding: 0.5em;
+}
