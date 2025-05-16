@@ -1,23 +1,10 @@
 import axios from "axios";
-const baseUrl = "http://localhost:3001/persons"
+const baseUrl = "https://studies.cs.helsinki.fi/restcountries/api/name/"
 
-const getAll = () => {
-    return axios.get(baseUrl)
-}
-
-const create = newContanct => {
-    return axios.post(baseUrl, newContanct)
-}
-
-const remove = (id) => {
-    const request = axios.delete(`${baseUrl}/${id}`)
-    return request.then(response => response.data)
-}
-
-const update = (id, newContact) => {
-    return axios.put(`${baseUrl}/${id}`, newContact)
+const update = () => {
+    return 
 
 }
 
 
-export default { getAll, create, remove, update }
+export default { update }
