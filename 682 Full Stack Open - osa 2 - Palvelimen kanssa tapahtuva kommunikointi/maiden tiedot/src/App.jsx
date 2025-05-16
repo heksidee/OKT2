@@ -16,6 +16,7 @@ const App = () => {
       country.name.common.toLowerCase().includes(searchCountry.toLowerCase())
     )
     : [];
+
   return (
     <div>
       <p>Find countries</p>
@@ -25,24 +26,31 @@ const App = () => {
         onChange={(e) => setSearchCountry(e.target.value)}
       />
       {searchCountry && (
-        filteredCountries.map(country => (
+        filteredCountries.length > 10 ? (
+          <p>Too many matches, specify your search</p>
+        ) : filteredCountries.length === 1 ? (
+          filteredCountries.map(country => (
           <div key={country.cca3}>
             <h1>{country.name.common}</h1>
             <p>Capital: {country.capital}</p>
             <p>Area: {country.area}</p>
             <h2>Languages</h2>
             <ul>
-              {country.languages ? (
-                Object.entries(country.languages).map(([code, name]) => (
-                  <li key={code}>{name}</li>
-                ))
-              ) : (
-                <p>No language data available</p>
-              )}
+              {country.languages && Object.entries(country.languages).map(([code, name]) => (
+                <li key={code}>{name}</li>
+              ))}
             </ul>
+            <img src={country.flags.png}/>
           </div>
         ))
-      )}
+      ) : (
+        <ul>
+          {filteredCountries.map(country => (
+            <li key={country.cca3}>{country.name.common}</li>
+          ))}
+        </ul>
+      )
+    )}
     </div>
   )  
 }
