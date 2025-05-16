@@ -57,7 +57,6 @@ const App = () => {
     event.preventDefault();
     const existingContact = persons.find(person => person.name === newName)
     const newContact = {name: newName, number: newNumber}
-
     if (newName.trim() === "" || newNumber.trim() === "") return;
 
     if (existingContact) {
@@ -70,7 +69,7 @@ const App = () => {
           .then(updatedContact => {
             setPersons(persons.map(person =>
               person.id !== existingContact.id ? person : updatedContact.data
-            ))
+            ));
           });
         setNewName("");
         setNewNumber("");
