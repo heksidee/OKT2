@@ -70,15 +70,24 @@ const App = () => {
             setPersons(persons.map(person =>
               person.id !== existingContact.id ? person : updatedContact.data
             ));
-          });
-        setNewName("");
-        setNewNumber("");
-        setNotification(
-          `${newName} number changed`
-        )
-        setTimeout(() => {
-          setNotification(null)
-        }, 4000)
+            setNewName("");
+            setNewNumber("");
+            setNotification(
+              `${newName} number changed`
+            )
+            setTimeout(() => {
+              setNotification(null)
+            }, 4000)
+          })
+          .catch(error => {
+            setNewName("");
+            setNewNumber("");
+            setPersons(persons.filter(p => p.name !== newName))
+            setError(`${newName} was already deleted from to Phonebook`)
+            setTimeout(() => {
+              setError(null)
+            }, 4000)
+          })
       }
       return;
     }
@@ -115,6 +124,13 @@ const App = () => {
           setTimeout(() => {
             setNotification(null)
           }, 4000)
+        })
+        .catch(error => {
+            setPersons(persons.filter(person => person.id !== id))
+            setError(`${newName} was already deleted from to Phonebook`)
+            setTimeout(() => {
+              setError(null)
+            }, 4000)
         })
     }
   };
