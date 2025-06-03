@@ -58,7 +58,7 @@ const App = () => {
     const existingContact = persons.find(person => person.name === newName)
     const newContact = {name: newName, number: newNumber}
     if (newName.trim() === "" || newNumber.trim() === "") return;
-
+    console.log(newNumber.length)
     if (newName.length < 3) {
       setError("Name must be at least 3 characters long.");
       setTimeout(() => {
@@ -67,7 +67,7 @@ const App = () => {
       return;
     }
 
-    if (newNumber.length < 8 || !/^\d{2,3}-\{5,}$/.test(newNumber)) {
+    if (newNumber.length < 8 || !/^\d{2,3}-\d{5,}$/.test(newNumber)) {
       setError("Phone number must be in format XX-XXXXX or XXX-XXXXXX and be at least 8 characters long.")
       setTimeout(() => {
         setError(null)
