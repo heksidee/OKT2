@@ -59,6 +59,14 @@ const App = () => {
     const newContact = {name: newName, number: newNumber}
     if (newName.trim() === "" || newNumber.trim() === "") return;
 
+    if (newName.length < 3) {
+      setError("Name must be at least 3 characters long.");
+      setTimeout(() => {
+        setError(null)
+      }, 4000)
+      return;
+    }
+
     if (existingContact) {
       const confirmExisting = window.confirm(
         `"${newName}" is already added to phonebook, replace the old number with a new one?`
@@ -102,6 +110,12 @@ const App = () => {
         )
         setTimeout(() => {
           setNotification(null)
+        }, 4000)
+      })
+      .catch(error => {
+        setError(error.response.data)
+        setTimeout(() => {
+          setError(null)
         }, 4000)
       })
   }
