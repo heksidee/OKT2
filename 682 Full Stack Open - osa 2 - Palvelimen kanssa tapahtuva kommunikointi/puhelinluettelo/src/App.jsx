@@ -67,6 +67,14 @@ const App = () => {
       return;
     }
 
+    if (newNumber.length < 8 || !/^\d{2,3}-\{5,}$/.test(newNumber)) {
+      setError("Phone number must be in format XX-XXXXX or XXX-XXXXXX and be at least 8 characters long.")
+      setTimeout(() => {
+        setError(null)
+      }, 4000)
+      return;
+    }
+
     if (existingContact) {
       const confirmExisting = window.confirm(
         `"${newName}" is already added to phonebook, replace the old number with a new one?`
