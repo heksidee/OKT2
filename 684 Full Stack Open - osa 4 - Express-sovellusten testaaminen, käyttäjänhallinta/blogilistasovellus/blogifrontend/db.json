@@ -1,0 +1,32 @@
+{
+  "blogs": [
+    {
+      "id": "61bb",
+      "author": "Gerhard",
+      "title": "AI",
+      "url": "www.aiblogs.com",
+      "likes": 5
+    },
+    {
+      "id": "4c3f",
+      "author": "Kimmo",
+      "title": "Developping",
+      "url": "www.devblogs.com",
+      "likes": 5
+    },
+    {
+      "id": "5206",
+      "author": "Ziggy",
+      "title": "Reggae",
+      "url": "www.reggaeblogs.com",
+      "likes": 1
+    },
+    {
+      "id": "3d55",
+      "author": "Zimmer",
+      "title": "Musa",
+      "url": "www.musablog.com",
+      "likes": 4
+    }
+  ]
+}
