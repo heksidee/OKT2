@@ -1,5 +1,6 @@
 const express = require("express")
 const app = express()
+const cors = require("cors")
 
 let blogs = [
     {
@@ -35,6 +36,7 @@ const requestLogger = (request, response, next) => {
 
 app.use(express.json())
 app.use(requestLogger)
+app.use(cors())
 
 app.get("/api/blogs", (request, response) => {
     response.send(blogs)
