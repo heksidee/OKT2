@@ -12,21 +12,14 @@
       "author": "Kimmo",
       "title": "Developping",
       "url": "www.devblogs.com",
-      "likes": 5
+      "likes": 6
     },
     {
       "id": "5206",
       "author": "Ziggy",
       "title": "Reggae",
       "url": "www.reggaeblogs.com",
-      "likes": 1
-    },
-    {
-      "id": "3d55",
-      "author": "Zimmer",
-      "title": "Musa",
-      "url": "www.musablog.com",
-      "likes": 4
+      "likes": 6
     }
   ]
 }

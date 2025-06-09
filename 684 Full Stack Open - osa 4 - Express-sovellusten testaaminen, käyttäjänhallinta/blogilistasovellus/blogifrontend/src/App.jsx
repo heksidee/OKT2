@@ -1,7 +1,8 @@
 import BlogList from "./components/Blog"
 import { useState, useEffect } from "react"
-import axios from "axios"
 import "./App.css";
+import blogService from "./services/blogs"
+import Notification from "./components/Notification"
 
 const Blogintiedot = ({ addBlog, newAuthor, newTitle, newUrl, handleAuthorChange, handleTitleChange, handleUrlChange }) => {
   return (
@@ -34,13 +35,14 @@ const App = () => {
   const [newAuthor, setNewAuthor] = useState("")
   const [newTitle, setNewTitle] = useState("")
   const [newUrl, setNewUrl] = useState("")
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
-    axios
-    .get("http://localhost:3001/blogs")
-    .then(response => {
-      setBlogs(response.data)
-    })
+    blogService
+      .getAll()
+      .then(initialBlogs => {
+        setBlogs(initialBlogs)
+      })
   }, [])
 
   const addBlog = (event) => {
@@ -52,11 +54,10 @@ const App = () => {
       likes: 0
     }
 
-    axios
-      .post("http://localhost:3001/blogs", blogObject)
-      .then(response => {
-        console.log(response);
-        setBlogs(blogs.concat(response.data))
+    blogService
+      .create(blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
         setNewAuthor("")
         setNewTitle("")
         setNewUrl("")
@@ -67,10 +68,19 @@ const App = () => {
     const blogToUpdate = blogs.find(blog => blog.id === id);
     const updatedBlog = { ...blogToUpdate, likes: (blogToUpdate.likes || 0) + 1};
 
-    axios
-      .put(`http://localhost:3001/blogs/${id}`, updatedBlog)
-      .then(response => {
-        setBlogs(blogs.map(blog => blog.id === id ? response.data : blog));
+    blogService
+      .update(id, updatedBlog)
+      .then(returnedBlog => {
+        setBlogs(blogs.map(blog => blog.id === id ? returnedBlog : blog));
+      })
+      .catch(error => {
+        console.log(error)
+        setErrorMessage(`The blog ${blogToUpdate.title} was already deleted`)
+        setBlogs(blogs.filter(n => n.id !== id))
+
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
       })
   }
 
@@ -99,6 +109,7 @@ const App = () => {
         <TableHeader />
         <BlogList blogs={blogs} handleLike={handleLike}/>
       </table>
+      <Notification message={errorMessage}/>
     </div>
   )
 }
