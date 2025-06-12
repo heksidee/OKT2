@@ -41,7 +41,6 @@ const App = () => {
     blogService
       .getAll()
       .then(initialBlogs => {
-        console.log("Fetched blogs:", initialBlogs)
         setBlogs(initialBlogs)
       })
       .catch(error => {
