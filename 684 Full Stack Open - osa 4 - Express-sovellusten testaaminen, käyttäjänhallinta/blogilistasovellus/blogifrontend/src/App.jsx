@@ -12,7 +12,7 @@ const Blogintiedot = ({ addBlog, newAuthor, newTitle, newUrl, handleAuthorChange
         <input value={newTitle} type="text" placeholder="Title" onChange={handleTitleChange} />
         <input value={newUrl} type="text" placeholder="url" onChange={handleUrlChange} />
       </div>
-      <button>Lisää blogi</button>
+      <button>Add blog</button>
     </form>
   )
 }
@@ -35,7 +35,7 @@ const App = () => {
   const [newAuthor, setNewAuthor] = useState("")
   const [newTitle, setNewTitle] = useState("")
   const [newUrl, setNewUrl] = useState("")
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [notification, setNotification] = useState({ message: null, type: null })
 
   useEffect(() => {
     blogService
@@ -65,6 +65,9 @@ const App = () => {
         setNewAuthor("")
         setNewTitle("")
         setNewUrl("")
+        setNotification({ message: `Blog "${returnedBlog.title}" added!`, type: "success" });
+        setTimeout(() => setNotification({ message: null, type: null })
+        , 5000);
       })
   }
 
@@ -79,11 +82,11 @@ const App = () => {
       })
       .catch(error => {
         console.log(error)
-        setErrorMessage(`The blog ${blogToUpdate.title} was already deleted`)
+        setNotification({ message: `The blog ${blogToUpdate.title} was already deleted`, type: "error" })
         setBlogs(blogs.filter(n => n.id !== id))
 
         setTimeout(() => {
-          setErrorMessage(null)
+          setNotification({ message: null, type: null })
         }, 5000)
       })
   }
@@ -113,7 +116,7 @@ const App = () => {
         <TableHeader />
         <BlogList blogs={blogs} handleLike={handleLike}/>
       </table>
-      <Notification message={errorMessage}/>
+      <Notification notification={notification} />
     </div>
   )
 }

@@ -1,10 +1,11 @@
-const Notification = ({ message }) => {
+const Notification = ({ notification }) => {
 
-    if (!message) return null;
+    if (!notification.message) return null;
+
     const notificationStyle = {
-        color: "red",
-        border: "solid 2px red",
-        backgroundColor: "lightgrey",
+        color: "black",
+        border: notification.type === "success" ? "solid 2px green" : "solid 2px red",
+        backgroundColor: notification.type === "success" ? "lightgreen" : "lightgrey",
         padding: "5px",
         marginTop: "5px",
         borderRadius: "5px",
@@ -13,7 +14,7 @@ const Notification = ({ message }) => {
 
     return (
         <div style={notificationStyle}>
-            {message}
+            {notification.message}
         </div>
     );
 };
