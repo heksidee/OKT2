@@ -102,7 +102,7 @@ const App = () => {
   
   return (
     <div>
-      <h1>Blogisovellus</h1>
+      <h1>Blog App</h1>
       <Blogintiedot 
         addBlog={addBlog} 
         newAuthor={newAuthor} 
