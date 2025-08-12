@@ -17,3 +17,7 @@ table {
 .blogrow {
     border: 2px solid green;
 }
+
+button {
+    margin-right: 8px;
+}

@@ -90,6 +90,21 @@ const App = () => {
       })
   }
 
+  const handleDelete = async (id) => {
+    const confirm = window.confirm("Are you sure you want to delete this blog?")
+    if (!confirm) return
+
+    try {
+      await blogService.deleteBlog(id)
+      setBlogs(blogs.filter(blog => blog.id !== id))
+      setNotification("Blog deleted successfully")
+      setTimeout(() => setNotification(null), 5000)
+    } catch (error) {
+      setNotification("Error deleting blog")
+      setTimeout(() => setNotification(null), 5000)
+    }
+  }
+
   const handleAuthorChange = (event) => {
     setNewAuthor(event.target.value)
   }
@@ -113,7 +128,7 @@ const App = () => {
         handleUrlChange={handleUrlChange} />
       <table>
         <TableHeader />
-        <BlogList blogs={blogs} handleLike={handleLike}/>
+        <BlogList blogs={blogs} handleLike={handleLike} handleDelete={handleDelete}/>
       </table>
       <Notification notification={notification} />
     </div>

@@ -1,4 +1,4 @@
-const BlogList = ({ blogs, handleLike }) => {
+const BlogList = ({ blogs, handleLike, handleDelete }) => {
   return (
     <tbody>
       {blogs.map((blog) => (
@@ -8,6 +8,7 @@ const BlogList = ({ blogs, handleLike }) => {
           <td style={{ padding: "10px 20px", textAlign: "center" }}>{blog.url}</td>
           <td style={{ padding: "10px 20px", textAlign: "center" }}>
             <button onClick={() => handleLike(blog.id)}>Likes ({blog.likes})</button>
+            <button onClick={() => handleDelete(blog.id)}>Delete</button>
           </td>
         </tr>
       ))}
