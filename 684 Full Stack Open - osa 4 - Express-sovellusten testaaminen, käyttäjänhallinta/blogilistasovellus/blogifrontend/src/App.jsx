@@ -95,13 +95,14 @@ const App = () => {
     if (!confirm) return
 
     try {
+      const blogToDelete = blogs.find(b => b.id === id)
       await blogService.deleteBlog(id)
       setBlogs(blogs.filter(blog => blog.id !== id))
-      setNotification("Blog deleted successfully")
+      setNotification({ message: `Blog ${blogToDelete.title} deleted successfully`, type: "success" })
       setTimeout(() => setNotification(null), 5000)
     } catch (error) {
-      setNotification("Error deleting blog")
-      setTimeout(() => setNotification(null), 5000)
+      setNotification({ message: "Error deleting blog", type: "error" })
+      setTimeout(() => setNotification({ message: null, type: null }), 5000)
     }
   }
 

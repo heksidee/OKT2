@@ -1,6 +1,6 @@
 const Notification = ({ notification }) => {
 
-    if (!notification.message) return null;
+    if (!notification || !notification.message) return null;
 
     const notificationStyle = {
         color: "black",
