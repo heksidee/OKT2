@@ -20,6 +20,33 @@ export const ALL_AUTHORS = gql`
   }
 `;
 
-/*export const ADD_BOOK = gql`
-    mutation addBook($title: String!, $author: String!, $published: Int!, $genres: [String!]) {
-        }`;*/
+export const ADD_BOOK = gql`
+  mutation createBook(
+    $title: String!
+    $author: String!
+    $published: Int!
+    $genres: [String!]
+  ) {
+    addBook(
+      title: $title
+      published: $published
+      genres: $genres
+      author: $author
+    ) {
+      title
+      published
+      id
+      genres
+      author
+    }
+  }
+`;
+
+export const EDIT_BORN_YEAR = gql`
+  mutation editAuthor($author: String!, $setBornTo: Int!) {
+    editAuthor(author: $author, setBornTo: $setBornTo) {
+      name
+      born
+    }
+  }
+`;
