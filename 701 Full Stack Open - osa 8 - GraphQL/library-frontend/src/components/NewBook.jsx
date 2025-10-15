@@ -20,7 +20,7 @@ const NewBook = ({ show, setPage }) => {
   const submit = async (event) => {
     event.preventDefault();
 
-    createBook({ variables: { title, published, genres, author } });
+    await createBook({ variables: { title, published, genres, author } });
 
     setTitle("");
     setPublished("");

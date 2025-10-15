@@ -3,9 +3,6 @@ import { useMutation } from "@apollo/client";
 import { LOGIN } from "../queries";
 
 const LoginForm = ({ setToken, setPage, show }) => {
-  if (!show) {
-    return null;
-  }
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -28,6 +25,10 @@ const LoginForm = ({ setToken, setPage, show }) => {
       console.log("Login mutation failed:", error.message);
     }
   };
+
+  if (!show) {
+    return null;
+  }
 
   return (
     <div>
