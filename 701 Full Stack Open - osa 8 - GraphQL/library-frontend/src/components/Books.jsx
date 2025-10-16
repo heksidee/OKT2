@@ -4,25 +4,24 @@ import { useState } from "react";
 import "./componentStyles.css";
 
 const Books = ({ show, token, favoriteGenre, setFavoriteGenre }) => {
-  const result = useQuery(ALL_BOOKS);
   const [selectedGenre, setSelectedGenre] = useState(null);
+  const allGenresFavorite = useQuery(ALL_BOOKS);
+  const { loading, data } = useQuery(ALL_BOOKS, {
+    variables: selectedGenre ? { genres: [selectedGenre] } : {},
+  });
 
   if (!show) {
     return null;
   }
-  if (result.loading) {
+  if (loading) {
     return <div>loading...</div>;
   }
 
-  const books = result.data.allBooks || [];
+  const books = data?.allBooks || [];
 
-  const allGenres = books
-    .flatMap((book) => book.genres || [])
+  const allGenres = allGenresFavorite.data?.allBooks
+    ?.flatMap((book) => book.genres || [])
     .filter((genre, index, self) => self.indexOf(genre) === index);
-
-  const filteredBooks = selectedGenre
-    ? books.filter((book) => book.genres.includes(selectedGenre))
-    : books;
 
   return (
     <div>
@@ -51,7 +50,7 @@ const Books = ({ show, token, favoriteGenre, setFavoriteGenre }) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {filteredBooks.map((a) => (
+          {books.map((a) => (
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>

@@ -95,7 +95,7 @@ const resolvers = {
       }
 
       if (args.genres) {
-        query.genres = { $all: args.genres };
+        query.genres = { $in: args.genres };
       }
 
       return Book.find(query).populate("author");
