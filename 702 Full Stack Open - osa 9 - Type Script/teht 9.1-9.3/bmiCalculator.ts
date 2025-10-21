@@ -1,9 +1,10 @@
-interface Values {
+export interface Values {
   height: number;
   weight: number;
+  bmi: string;
 }
 
-const parseArguments = (args: string[]): Values => {
+/*const parseArguments = (args: string[]): Values => {
   if (process.argv.length !== 4) {
     throw new Error("Incorrect amount of arguments");
   }
@@ -15,24 +16,31 @@ const parseArguments = (args: string[]): Values => {
   } else {
     throw new Error("Provided values were not numbers!");
   }
-};
+};*/
 
-const calculateBmi = (height: number, weight: number): string => {
+export const calculateBmi = (height: number, weight: number): Values => {
   const heightInMeters = height / 100;
-  const bmi = weight / (heightInMeters * heightInMeters);
+  const bmiCalc = weight / (heightInMeters * heightInMeters);
 
-  if (bmi < 18.5) {
-    return "Underweight";
-  } else if (bmi < 25) {
-    return "Normal weight";
-  } else if (bmi < 30) {
-    return "Overweight";
+  let bmi = "";
+  if (bmiCalc < 18.5) {
+    bmi = "Underweight";
+  } else if (bmiCalc < 25) {
+    bmi = "Normal weight";
+  } else if (bmiCalc < 30) {
+    bmi = "Overweight";
   } else {
-    return "Obese";
+    bmi = "Obese";
   }
+
+  return {
+    height,
+    weight,
+    bmi,
+  };
 };
 
-try {
+/*try {
   const { height, weight } = parseArguments(process.argv);
   const result = calculateBmi(height, weight);
   console.log(result);
@@ -42,4 +50,4 @@ try {
     errorMessage += "Error: " + error.message;
   }
   console.log(errorMessage);
-}
+}*/
