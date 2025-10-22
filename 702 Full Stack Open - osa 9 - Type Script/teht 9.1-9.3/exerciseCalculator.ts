@@ -1,4 +1,4 @@
-interface Hours {
+export interface Hours {
   periodLength: number;
   trainingDays: number;
   success: boolean;
@@ -8,7 +8,7 @@ interface Hours {
   average: number;
 }
 
-const parseArgum = (
+/*const parseArgum = (
   args: string[]
 ): { target: number; dailyHours: number[] } => {
   if (args.length < 4) {
@@ -26,9 +26,12 @@ const parseArgum = (
     target,
     dailyHours,
   };
-};
+};*/
 
-const calculateExercises = (target: number, dailyHours: number[]): Hours => {
+export const calculateExercises = (
+  dailyHours: number[],
+  target: number
+): Hours => {
   const periodLength = dailyHours.length;
   const trainingDays = dailyHours.filter((h) => h > 0).length;
   const average = dailyHours.reduce((a, b) => a + b, 0) / periodLength;
@@ -64,7 +67,7 @@ const calculateExercises = (target: number, dailyHours: number[]): Hours => {
   };
 };
 
-try {
+/*try {
   const { target, dailyHours } = parseArgum(process.argv);
   console.log(calculateExercises(target, dailyHours));
 } catch (error: unknown) {
@@ -73,4 +76,4 @@ try {
     errorMessage += "Error: " + error.message;
   }
   console.log(errorMessage);
-}
+}*/
