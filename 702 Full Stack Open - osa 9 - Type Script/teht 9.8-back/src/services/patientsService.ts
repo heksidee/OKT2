@@ -6,8 +6,6 @@ import {
 } from "../types";
 import { v1 as uuid } from "uuid";
 
-const id = uuid();
-
 const patients: PatientEntry[] = patientsData;
 
 const getPatients = (): PatientEntry[] => {
@@ -26,7 +24,7 @@ const getNonSensitiveEntries = (): NonSensitivePatientEntry[] => {
 
 const addPatient = (entry: NewPatientEntry): PatientEntry => {
   const newPatientEntry = {
-    id: id,
+    id: uuid(),
     ...entry,
   };
   patients.push(newPatientEntry);
