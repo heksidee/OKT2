@@ -4,8 +4,8 @@ const isString = (text: unknown): text is string => {
   return typeof text === "string" || text instanceof String;
 };
 
-const isDate = (dateOfBirth: string): boolean => {
-  return Boolean(Date.parse(dateOfBirth));
+const isDate = (date: string): boolean => {
+  return !isNaN(Date.parse(date));
 };
 
 const isSSN = (ssn: string): boolean => {
@@ -28,7 +28,7 @@ const parseName = (name: unknown): string => {
 
 const parseDateOfBirth = (dateOfBirth: unknown): string => {
   if (!isString(dateOfBirth) || !isDate(dateOfBirth)) {
-    throw new Error("Incorrect or missing date of birth" + dateOfBirth);
+    throw new Error("Incorrect or missing date of birth: " + dateOfBirth);
   }
   return dateOfBirth;
 };
