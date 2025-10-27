@@ -102,7 +102,7 @@ interface CoursePartBackground extends CoursePartBase, DescriptionPart {
 }
 
 interface CoursePartSpecial extends CoursePartBase, DescriptionPart {
-  requirements: ["nodejs", "jest"];
+  requirements: string[];
   kind: "special";
 }
 
