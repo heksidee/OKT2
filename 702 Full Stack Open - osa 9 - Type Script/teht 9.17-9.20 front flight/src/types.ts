@@ -5,3 +5,5 @@ export type Diary = {
   weather: string;
   comment: string;
 };
+
+export type NewDiary = Omit<Diary, "id">;

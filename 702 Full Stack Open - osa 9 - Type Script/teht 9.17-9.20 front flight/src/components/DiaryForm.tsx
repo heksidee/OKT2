@@ -1,8 +1,8 @@
 import { useState } from "react";
-import type { Diary } from "../types";
+import type { Diary, NewDiary } from "../types";
 
 interface Props {
-  onSubmit: (newDiary: Omit<Diary, "id">) => void;
+  onSubmit: (newDiary: NewDiary) => void;
 }
 
 const DiaryForm = ({ onSubmit }: Props) => {
@@ -25,18 +25,41 @@ const DiaryForm = ({ onSubmit }: Props) => {
       <form onSubmit={handleSubmit}>
         <div>
           Date:
-          <input value={date} onChange={(e) => setDate(e.target.value)} />
-        </div>
-        <div>
-          Visibility:
           <input
-            value={visibility}
-            onChange={(e) => setVisibility(e.target.value)}
+            type="date"
+            value={date}
+            min="2000-01-01"
+            max="2030-12-31"
+            onChange={(e) => setDate(e.target.value)}
           />
         </div>
         <div>
+          Visibility:
+          {["great", "good", "ok", "poor"].map((option) => (
+            <label key={option} style={{ margin: "0.5em" }}>
+              {option}
+              <input
+                value={option}
+                type="radio"
+                checked={visibility === option}
+                onChange={(e) => setVisibility(e.target.value)}
+              />
+            </label>
+          ))}
+        </div>
+        <div>
           Weather:
-          <input value={weather} onChange={(e) => setWeather(e.target.value)} />
+          {["sunny", "rainy", "cloudy", "stormy", "windy"].map((option) => (
+            <label key={option} style={{ margin: "0.5em" }}>
+              {option}
+              <input
+                value={option}
+                type="radio"
+                checked={weather === option}
+                onChange={(e) => setWeather(e.target.value)}
+              />
+            </label>
+          ))}
         </div>
         <div>
           Comment:

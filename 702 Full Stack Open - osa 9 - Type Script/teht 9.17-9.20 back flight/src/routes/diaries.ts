@@ -37,7 +37,17 @@ const errorMiddleware = (
   next: NextFunction
 ) => {
   if (error instanceof z.ZodError) {
-    res.status(400).send({ error: error.issues });
+    const issue = error.issues[0];
+    const field = issue.path[0];
+    const received = (issue as any).received ?? _req.body?.[field] ?? "unknown";
+    const message = issue.message;
+
+    res.status(400).json({
+      message,
+      field,
+      received,
+    });
+    //res.status(400).send({ error: error.issues });
   } else {
     next(error);
   }
