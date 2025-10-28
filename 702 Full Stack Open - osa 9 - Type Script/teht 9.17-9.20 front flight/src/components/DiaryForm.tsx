@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Diary, NewDiary } from "../types";
+import type { NewDiary } from "../types";
 
 interface Props {
   onSubmit: (newDiary: NewDiary) => void;
