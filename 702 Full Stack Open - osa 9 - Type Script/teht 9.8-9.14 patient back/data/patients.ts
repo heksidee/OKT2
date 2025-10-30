@@ -1,4 +1,4 @@
-import { Patient } from "../src/types";
+import { Patient, Entry } from "../src/types";
 import { toNewPatientEntry } from "../src/utils";
 
 const data = [
@@ -113,10 +113,18 @@ const data = [
   },
 ];
 
-const patientEntries: Patient[] = data.map((obj) => {
+/*const patientEntries: Patient[] = data.map((obj) => {
   const object = toNewPatientEntry(obj) as Patient;
   object.id = obj.id;
   return object;
+});*/
+const patientEntries: Patient[] = data.map((obj) => {
+  const base = toNewPatientEntry(obj); // tämä ei sisällä entries
+  return {
+    ...base,
+    id: obj.id,
+    entries: obj.entries as Entry[], // ← lisää entries mukaan
+  };
 });
 
 export default patientEntries;

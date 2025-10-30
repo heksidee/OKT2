@@ -71,7 +71,7 @@ interface Sickleave {
 
 interface OccupationalHealthcareEntry extends BaseEntry {
   employerName: string;
-  sickleave?: Sickleave;
+  sickLeave?: Sickleave;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

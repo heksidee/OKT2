@@ -9,6 +9,8 @@ import { v1 as uuid } from "uuid";
 
 const patients: PatientEntry[] = patientsData;
 
+//const indPatient: Patient[] = patientsData
+
 const getPatients = (): PatientEntry[] => {
   return patients;
 };
@@ -38,7 +40,7 @@ const findById = (id: string): Patient | undefined => {
   return {
     ...patient,
     ssn: patient.ssn!,
-    entries: [],
+    entries: patient.entries,
   };
 };
 
