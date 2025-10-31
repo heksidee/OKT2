@@ -113,17 +113,12 @@ const data = [
   },
 ];
 
-/*const patientEntries: Patient[] = data.map((obj) => {
-  const object = toNewPatientEntry(obj) as Patient;
-  object.id = obj.id;
-  return object;
-});*/
 const patientEntries: Patient[] = data.map((obj) => {
-  const base = toNewPatientEntry(obj); // tämä ei sisällä entries
+  const base = toNewPatientEntry(obj);
   return {
     ...base,
     id: obj.id,
-    entries: obj.entries as Entry[], // ← lisää entries mukaan
+    entries: obj.entries as Entry[],
   };
 });
 

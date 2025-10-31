@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { NewEntrySchema } from "./utils";
+import { NewEntrySchema, NewEntriesSchema } from "./utils";
 
 export interface DiagnoseEntry {
   code: string;
@@ -49,9 +49,9 @@ export enum HealthCheckRating {
   "CriticalRisk" = 3,
 }
 
-interface HelathCheckEntry extends BaseEntry {
+interface HealthCheckEntry extends BaseEntry {
   type: "HealthCheck";
-  healthcheckRating: HealthCheckRating;
+  healthCheckRating: HealthCheckRating;
 }
 
 interface Discharge {
@@ -78,10 +78,12 @@ interface OccupationalHealthcareEntry extends BaseEntry {
 export type Entry =
   | HospitalEntry
   | OccupationalHealthcareEntry
-  | HelathCheckEntry;
+  | HealthCheckEntry;
 
-type UnionOmit<T, K extends string | number | symbol> = T extends unknown
+export type NewEntry = z.infer<typeof NewEntriesSchema>;
+
+/*type UnionOmit<T, K extends string | number | symbol> = T extends unknown
   ? Omit<T, K>
   : never;
 
-type EntryWithoutId = UnionOmit<Entry, "id">;
+type EntryWithoutId = UnionOmit<Entry, "id">;*/

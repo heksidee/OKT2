@@ -9,6 +9,7 @@ import {
   HealthCheckRating,
   HealthCheckEntry,
 } from "../types";
+import AddEntryForm from "./AddEntryForm";
 
 import TransgenderIcon from "@mui/icons-material/Transgender";
 import FemaleIcon from "@mui/icons-material/Female";
@@ -85,7 +86,7 @@ const PatientDetail = () => {
             })}
           </ul>
         )}
-        <p>diagnose by {entry.specialist}</p>
+        <p style={textStyle}>diagnose by {entry.specialist}</p>
       </div>
     );
   };
@@ -107,7 +108,7 @@ const PatientDetail = () => {
       case "OccupationalHealthcare":
         return <WorkIcon style={iconStyle} />;
       default:
-        return null;
+        return assertNever(entry);
     }
   };
 
@@ -126,14 +127,22 @@ const PatientDetail = () => {
     }
   };
 
+  const assertNever = (value: never): never => {
+    throw new Error(`Unhandled entry type: ${JSON.stringify(value)}`);
+  };
+
+  const otherStyle = { LineHeight: "1.2", margin: "4px 0" };
   return (
     <div>
       <h2>
         {patient.name} {genderIcon()}
       </h2>
-      <p>ssn: {patient.ssn}</p>
-      <p>Occupation: {patient.occupation}</p>
-      <h3>Entries</h3>
+      <p style={otherStyle}>ssn: {patient.ssn}</p>
+      <p style={otherStyle}>Occupation: {patient.occupation}</p>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <AddEntryForm />
+        <h3>Entries</h3>
+      </div>
       {patient.entries.map((entry) => (
         <EntryDetails key={entry.id} entry={entry} />
       ))}
