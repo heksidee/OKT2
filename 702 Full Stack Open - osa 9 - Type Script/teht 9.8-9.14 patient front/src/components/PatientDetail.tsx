@@ -140,7 +140,15 @@ const PatientDetail = () => {
       <p style={otherStyle}>ssn: {patient.ssn}</p>
       <p style={otherStyle}>Occupation: {patient.occupation}</p>
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <AddEntryForm />
+        <AddEntryForm
+          patientId={patient.id}
+          onAddEntry={(newEntry) => {
+            setPatient((prev) =>
+              prev ? { ...prev, entries: [...prev.entries, newEntry] } : prev
+            );
+          }}
+          diagnoses={diagnoses}
+        />
         <h3>Entries</h3>
       </div>
       {patient.entries.map((entry) => (

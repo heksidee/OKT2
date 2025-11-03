@@ -1,27 +1,73 @@
-import { useState } from "react";
-import { HealthCheckEntry } from "../types";
+import { useState, SyntheticEvent } from "react";
+import { HealthCheckEntry, HealthCheckRating, Diagnosis } from "../types";
 
-import { TextField, Button } from "@mui/material";
+import {
+  TextField,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Chip,
+  Box,
+} from "@mui/material";
 
 interface Props {
   type: HealthCheckEntry["type"];
   onCancel: () => void;
+  onSubmit: (values: Omit<HealthCheckEntry, "id">) => void;
+  setError: (msg: string | null) => void;
+  diagnoses: Diagnosis[];
 }
 
-const HealthCheckForm = ({ type, onCancel }: Props) => {
-  const [healthcheck, setHealthcheck] = useState<HealthCheckEntry | undefined>(
-    undefined
-  );
+const HealthCheckForm = ({
+  type,
+  onCancel,
+  onSubmit,
+  setError,
+  diagnoses,
+}: Props) => {
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [specialist, setSpecialst] = useState("");
-  const [healthRating, setHealthRating] = useState("");
-  const [diagnosisCodes, setDiagnosisCodes] = useState("");
+  const [healthCheckRating, setHealthCheckRating] = useState<
+    HealthCheckRating | undefined
+  >(undefined);
+  const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>([]);
+
+  const addHealtCheckEntry = (event: SyntheticEvent) => {
+    event.preventDefault();
+    if (
+      healthCheckRating === undefined ||
+      healthCheckRating < 0 ||
+      healthCheckRating > 3
+    ) {
+      setError(`Value of Healthcheck rating incorrect: ${healthCheckRating}`);
+      return;
+    }
+    if (
+      !description ||
+      !date ||
+      !specialist ||
+      !diagnosisCodes ||
+      !healthCheckRating
+    ) {
+      setError("Fill every input");
+    }
+    onSubmit({
+      description,
+      date,
+      specialist,
+      diagnosisCodes,
+      type,
+      healthCheckRating,
+    });
+  };
 
   return (
     <div>
       <h3>New {type} entry</h3>
-      <form>
+      <form onSubmit={addHealtCheckEntry}>
         <TextField
           label="Description"
           fullWidth
@@ -30,9 +76,11 @@ const HealthCheckForm = ({ type, onCancel }: Props) => {
         />
         <TextField
           label="Date"
+          type="date"
           fullWidth
           value={date}
           onChange={({ target }) => setDate(target.value)}
+          InputLabelProps={{ shrink: true }}
         />
         <TextField
           label="Specialst"
@@ -41,17 +89,44 @@ const HealthCheckForm = ({ type, onCancel }: Props) => {
           onChange={({ target }) => setSpecialst(target.value)}
         />
         <TextField
-          label="Healthcheck Rating"
+          label="Healthcheck Rating (0-3)"
+          type="number"
+          inputProps={{ min: 0, max: 3 }}
           fullWidth
-          value={healthRating}
-          onChange={({ target }) => setHealthRating(target.value)}
+          value={healthCheckRating ?? ""}
+          onChange={({ target }) => {
+            const ratingValue = target.value;
+            if (ratingValue === "") {
+              setHealthCheckRating(undefined);
+            } else {
+              setHealthCheckRating(Number(target.value) as HealthCheckRating);
+            }
+          }}
         />
-        <TextField
-          label="Diagnosis Codes"
-          fullWidth
-          value={diagnosisCodes}
-          onChange={({ target }) => setDiagnosisCodes(target.value)}
-        />
+        <FormControl fullWidth>
+          <InputLabel id="diagnosis-label">Diagnosis Codes</InputLabel>
+          <Select
+            labelId="diagnosis-label"
+            multiple
+            value={diagnosisCodes}
+            onChange={(e) =>
+              setDiagnosisCodes(e.target.value as unknown as string[])
+            }
+            renderValue={(selected) => (
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                {(selected as string[]).map((code) => (
+                  <Chip key={code} label={code} />
+                ))}
+              </Box>
+            )}
+          >
+            {diagnoses.map((diag) => (
+              <MenuItem key={diag.code} value={diag.code}>
+                {diag.code} – {diag.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <Button
           color="error"
           variant="contained"
@@ -65,7 +140,7 @@ const HealthCheckForm = ({ type, onCancel }: Props) => {
           color="primary"
           variant="contained"
           style={{ float: "right" }}
-          type="button"
+          type="submit"
         >
           Add entry
         </Button>
