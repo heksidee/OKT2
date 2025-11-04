@@ -1,5 +1,5 @@
-import { useQuery } from "@apollo/client";
-import { ALL_BOOKS } from "../queries";
+import { useQuery, useSubscription } from "@apollo/client";
+import { ALL_BOOKS, BOOK_ADDED } from "../queries";
 import { useState } from "react";
 import "./componentStyles.css";
 
@@ -8,6 +8,15 @@ const Books = ({ show, token, favoriteGenre, setFavoriteGenre }) => {
   const allGenresFavorite = useQuery(ALL_BOOKS);
   const { loading, data } = useQuery(ALL_BOOKS, {
     variables: selectedGenre ? { genres: [selectedGenre] } : {},
+  });
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      const newBook = data.data.bookAdded;
+      if (!books.find((b) => b.id === newBook.id)) {
+        alert(`Uusi kirja lisätty: ${newBook.title}`);
+      }
+    },
   });
 
   if (!show) {
