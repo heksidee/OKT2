@@ -8,8 +8,9 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Chip,
-  Box,
+  Checkbox,
+  ListItemText,
+  OutlinedInput,
 } from "@mui/material";
 
 interface Props {
@@ -49,6 +50,17 @@ const HospitalForm = ({
     });
   };
 
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 300,
+      },
+    },
+  };
+
   return (
     <div>
       <h3>New {type} entry</h3>
@@ -79,20 +91,20 @@ const HospitalForm = ({
             labelId="diagnosis-label"
             multiple
             value={diagnosisCodes}
-            onChange={(e) =>
-              setDiagnosisCodes(e.target.value as unknown as string[])
-            }
-            renderValue={(selected) => (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                {(selected as string[]).map((code) => (
-                  <Chip key={code} label={code} />
-                ))}
-              </Box>
-            )}
+            onChange={(e) => {
+              const value = e.target.value;
+              setDiagnosisCodes(
+                typeof value === "string" ? value.split(",") : value
+              );
+            }}
+            input={<OutlinedInput label="Diagnosis Codes" />}
+            renderValue={(selected) => selected.join(", ")}
+            MenuProps={MenuProps}
           >
             {diagnoses.map((diag) => (
               <MenuItem key={diag.code} value={diag.code}>
-                {diag.code} – {diag.name}
+                <Checkbox checked={diagnosisCodes.includes(diag.code)} />
+                <ListItemText primary={`${diag.code} – ${diag.name}`} />
               </MenuItem>
             ))}
           </Select>
