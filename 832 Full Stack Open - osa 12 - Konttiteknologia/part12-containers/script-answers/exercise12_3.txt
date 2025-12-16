@@ -1,0 +1,13 @@
+root@74613ead5612:/# script script-answers/exercise12_3.txt
+Script started, output log file is 'script-answers/exercise12_3.txt'.
+script: cannot open script-answers/exercise12_3.txt: No such file or directory
+                                                                             Script done.
+root@74613ead5612:/# mkdir -p script-answers
+root@74613ead5612:/# ls
+bin   dev  home  lib64  mnt  proc  run   script-answers  sys  usr
+boot  etc  lib   media  opt  root  sbin  srv             tmp  var
+root@74613ead5612:/# script script-answers/exercise12_3.txt
+Script started, output log file is 'script-answers/exercise12_3.txt'.
+# nano /usr/src/app/index.js
+# exit
+Script done.

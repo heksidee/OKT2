@@ -1,0 +1,7 @@
+Script started on 2025-12-16 11:49:43+02:00 [TERM="xterm" TTY="/dev/pts/0" COLUMNS="78" LINES="71"]
+# node/  /usr/src/app/index.js
+Hello from container
+Hello world
+# exit
+
+Script done on 2025-12-16 11:50:37+02:00 [COMMAND_EXIT_CODE="0"]
