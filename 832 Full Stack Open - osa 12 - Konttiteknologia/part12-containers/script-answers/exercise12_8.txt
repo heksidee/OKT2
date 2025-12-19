@@ -1,0 +1,84 @@
+Script started on 2025-12-19 13:19:14+02:00 [TERM="xterm-256color" TTY="/dev/pts/4" COLUMNS="111" LINES="29"]
+[?2004h]0;henry@Henry: /mnt/c/Users/henry/Downloads/OneDrive - Etela-Savon Koulutus Oy/OKT2/832 Full Stack Open - osa 12 - Konttiteknologia/part12-containers[01;32mhenry@Henry[00m:[01;34m/mnt/c/Users/henry/Downloads/OneDrive - Etela-Savon Koulutus Oy/OKT2/832 Full Stack Open - osa 12 - Konttiteknologia/part12-containers[00m$ docker container ls
+[?2004l
+CONTAINER ID   IMAGE     COMMAND                  CREATED        STATUS       PORTS                                           NAMES
+b31c306cfa4a   nginx     "/docker-entrypoint.…"   2 hours ago    Up 2 hours   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp         awesome_darwin
+da6c973cd0c8   mongo     "docker-entrypoint.s…"   23 hours ago   Up 3 hours   0.0.0.0:3456->27017/tcp, [::]:3456->27017/tcp   todo-backend-mongo-1
+[?2004h]0;henry@Henry: /mnt/c/Users/henry/Downloads/OneDrive - Etela-Savon Koulutus Oy/OKT2/832 Full Stack Open - osa 12 - Konttiteknologia/part12-containers[01;32mhenry@Henry[00m:[01;34m/mnt/c/Users/henry/Downloads/OneDrive - Etela-Savon Koulutus Oy/OKT2/832 Full Stack Open - osa 12 - Konttiteknologia/part12-containers[00m$ docker exec -it todo-backend-mongo-1 bash
+[?2004l
+[?2004hroot@da6c973cd0c8:/# mongosh -u rot ot -p example
+[?2004l
+]0;mongosh mongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000Current Mongosh Log ID:	694535edd9698e317f9dc29c
+Connecting to:		[1m[32mmongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.5.9[0m
+Using MongoDB:		8.2.2
+[1m[33mUsing Mongosh[0m:		2.5.9
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+
+To help improve our products, anonymous usage data is collected and sent to MongoDB periodically (https://www.mongodb.com/legal/privacy-policy).
+You can opt-out by running the disableTelemetry() command.
+
+[1G[0J [1G[?2004h[1m[33m------[0m
+   [1m[33mThe server generated these startup warnings when booting[0m
+   2025-12-19T08:17:15.926+00:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+   2025-12-19T08:17:16.871+00:00: For customers running the current memory allocator, we suggest changing the contents of the following sysfsFile
+   2025-12-19T08:17:16.871+00:00: For customers running the current memory allocator, we suggest changing the contents of the following sysfsFile
+   2025-12-19T08:17:16.871+00:00: We suggest setting the contents of sysfsFile to 0.
+   2025-12-19T08:17:16.871+00:00: We suggest setting swappiness to 0 or 1, as swapping can cause performance problems.
+[1m[33m------[0m
+
+[1G[0Jtest> [7Gshow dbs
+
+[1madmin[0m         100.00 KiB
+[1mconfig[0m         36.00 KiB
+[1mlocal[0m          64.00 KiB
+[1mthe_database[0m   68.00 KiB
+[1G[0Jtest> [7Guse the_database
+
+switched to db the_database
+[1G[0Jthe_database> [15Gshow collections
+
+[1mtodos[0m
+[1G[0Jthe_database> [15Gdb.todos.find({})
+
+[
+  {
+    _id: ObjectId([32m'6943f8b87a7ea6752a9dc29d'[39m),
+    text: [32m'Write code'[39m,
+    done: [33mtrue[39m
+  },
+  {
+    _id: ObjectId([32m'6943f8b87a7ea6752a9dc29e'[39m),
+    text: [32m'Learn about containers'[39m,
+    done: [33mfalse[39m
+  }
+]
+[1G[0Jthe_database> [15Gdb.todos.insertOne({ text[33mtext[39m: [32m"[39m[32mI[39m[32mn[39m[32mc[39m[32mr[39m[32me[39m[32ma[39m[32ms[39m[32me[39m [32mt[39m[32mh[39m[32me[39m [32mn[39m[32mu[39m[32mm[39m[32mb[39m[32me[39m[32mr[39m [32mo[39m[32mf[39m [32mt[39m[32mo[39m[32mo[39m[32ml[39m[32ms[39m [32mi[39m[32mn[39m [32mm[39m[32my[39m [32mt[39m[32mo[39m[32mo[39m[32ml[39m [32mb[39m[32me[39m[32ml[39m[32mt[39m[32m"[39m, d[36mdo[39mdone: fals[33mfalse[39m })
+
+{
+  acknowledged: [33mtrue[39m,
+  insertedId: ObjectId([32m'69453890d9698e317f9dc29d'[39m)
+}
+[1G[0Jthe_dat
+the_database> db.todos.find({})
+[
+  {
+    _id: ObjectId('6943f8b87a7ea6752a9dc29d'),
+    text: 'Write code',
+    done: true
+  },
+  {
+    _id: ObjectId('6943f8b87a7ea6752a9dc29e'),
+    text: 'Learn about containers',
+    done: false
+  },
+  {
+    _id: ObjectId('69453890d9698e317f9dc29d'),
+    text: 'Increase the number of tools in my tool belt',
+    done: false
+  }
+]
+the_database> exit
+root@da6c973cd0c8:/# exit
+exit
